@@ -1,10 +1,5 @@
-import Header from "@/components/Header";
-import { Container } from "./style";
+"use client";
 
-export default function Home() {
-  return (
-    <Container>
-      <Header />
-    </Container>
-  );
-}
+import Catalog from "@/components/Catalog";
+
+export default function Home() { return <Catalog /> }

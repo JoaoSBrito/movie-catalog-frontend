@@ -15,7 +15,7 @@ export default function Header() {
             <SearchIcon />
             <SearchInput
               type="text"
-              placeholder="Search for movies..."
+              placeholder="Pesquisar..."
             />
           </form>
         </SearchContainer>
