@@ -17,7 +17,12 @@ type UseMoviesResult = {
 
 export type MovieCategory = 'popular' | 'upcoming' | 'top_rated';
 
-const useMovies = (category: MovieCategory): UseMoviesResult => {
+interface UseMoviesProps {
+  category?: MovieCategory;
+  search?: string;
+}
+
+const useMovies = ({ category, search }: UseMoviesProps): UseMoviesResult => {
   const [data, setData] = useState<Movie[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,8 +32,14 @@ const useMovies = (category: MovieCategory): UseMoviesResult => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(`http://localhost:80/api/movie/${category}`);
-        setData(response.data.results);
+        if (search) {
+          const response = await axios.get(`http://localhost:80/api/movie/search?query=${encodeURIComponent(search)}`);
+          setData(response.data.results);
+          return;
+        } else {
+          const response = await axios.get(`http://localhost:80/api/movie/${category}`);
+          setData(response.data.results);
+        }
       } catch (err: any) {
         setError(err.message || 'Erro ao buscar os filmes.');
       } finally {
@@ -37,7 +48,7 @@ const useMovies = (category: MovieCategory): UseMoviesResult => {
     };
 
     fetchMovies();
-  }, [category]);
+  }, [category, search]);
 
   return { data, loading, error };
 };

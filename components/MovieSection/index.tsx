@@ -1,18 +1,20 @@
-import useMovies, { MovieCategory } from "@/hooks/useMovies";
-import { CarouselButton, CarouselContainer, CarouselWrapper, MoviesCarousel, SectionContainer, SectionTitle } from "./style";
-import MovieCard from "../MovieCard";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef } from "react";
+import { CarouselButton, CarouselContainer, CarouselWrapper, MoviesCarousel, MoviesGrid, SectionContainer, SectionTitle } from "./style";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import MovieCard from "../MovieCard";
+import useMovies, { MovieCategory } from "@/hooks/useMovies";
 
 interface MovieSectionProps {
   title: string;
-  category: MovieCategory;
+  category?: MovieCategory;
+  search?: string;
 }
 
-export default function MovieSection({ category, title }: MovieSectionProps) {
+export default function MovieSection({ category, title, search }: MovieSectionProps) {
   const carouselRef = useRef<HTMLDivElement>(null)
 
-  const { data, loading, error } = useMovies(category);
+  const { data, loading, error } = useMovies({ category, search });
 
   if (loading) return <p>Carregando...</p>
   if (error) return <p>Erro: {error}</p>
@@ -45,25 +47,36 @@ export default function MovieSection({ category, title }: MovieSectionProps) {
     <SectionContainer>
       <SectionTitle>{title}</SectionTitle>
 
-      <>
-        <CarouselContainer>
-          <CarouselButton onClick={scrollLeft} position="left">
-            <ChevronLeft size={24} />
-          </CarouselButton>
 
-          <CarouselWrapper>
-            <MoviesCarousel ref={carouselRef}>
-              {data.map((movie) => (
+      {!loading && !error && (
+        <>
+          {search ? (
+            <MoviesGrid>
+              {data?.map((movie) => (
                 <MovieCard key={movie.id} movie={movie} />
               ))}
-            </MoviesCarousel>
-          </CarouselWrapper>
+            </MoviesGrid>) : (
+            <CarouselContainer>
+              <CarouselButton onClick={scrollLeft} position="left">
+                <ChevronLeft size={24} />
+              </CarouselButton>
 
-          <CarouselButton onClick={scrollRight} position="right">
-            <ChevronRight size={24} />
-          </CarouselButton>
-        </CarouselContainer>
-      </>
+              <CarouselWrapper>
+                <MoviesCarousel ref={carouselRef}>
+                  {data.map((movie) => (
+                    <MovieCard key={movie.id} movie={movie} />
+                  ))}
+                </MoviesCarousel>
+              </CarouselWrapper>
+
+              <CarouselButton onClick={scrollRight} position="right">
+                <ChevronRight size={24} />
+              </CarouselButton>
+            </CarouselContainer>
+          )}
+
+        </>
+      )}
     </SectionContainer>
   );
 }

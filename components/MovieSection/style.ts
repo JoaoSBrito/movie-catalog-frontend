@@ -110,3 +110,20 @@ export const CarouselButton = styled.button<{ position: "left" | "right" }>`
     display: none;
   }
 `
+
+export const MoviesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: ${(props) => props.theme?.spacing?.lg || "1.5rem"};
+  margin-bottom: ${(props) => props.theme?.spacing?.xl || "2rem"};
+
+  @media (max-width: ${(props) => props.theme?.breakpoints?.tablet || "768px"}) {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: ${(props) => props.theme?.spacing?.md || "1rem"};
+  }
+
+  @media (max-width: ${(props) => props.theme?.breakpoints?.mobile || "480px"}) {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: ${(props) => props.theme?.spacing?.md || "1rem"};
+  }
+`

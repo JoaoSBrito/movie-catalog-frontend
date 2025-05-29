@@ -1,7 +1,29 @@
-import { Film } from "lucide-react";
+import { useState } from "react";
 import { HeaderContainer, HeaderContent, Logo, SearchContainer, SearchIcon, SearchInput } from "./style";
+import { Film } from "lucide-react";
 
-export default function Header() {
+interface HeaderProps {
+  onSearch: (query: string) => void;
+}
+export default function Header({ onSearch }: HeaderProps) {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+
+    if (value.trim() === "") {
+      onSearch("");
+    }
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!searchQuery.trim()) return;
+    onSearch(searchQuery.trim());
+  }
+
   return (
     <HeaderContainer>
       <HeaderContent>
@@ -11,11 +33,13 @@ export default function Header() {
         </Logo>
 
         <SearchContainer>
-          <form>
+          <form onSubmit={handleSubmit}>
             <SearchIcon />
             <SearchInput
               type="text"
               placeholder="Pesquisar..."
+              value={searchQuery}
+              onChange={handleChange}
             />
           </form>
         </SearchContainer>
