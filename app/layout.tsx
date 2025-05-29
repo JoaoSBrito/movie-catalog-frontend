@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Providers } from "../components/Providers";
+import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
   title: "Catálogo de filmes",
@@ -14,9 +15,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body>
-        <Providers>
-          {children}
-        </Providers>
+        <AuthProvider>
+          <Providers>
+            {children}
+          </Providers>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -68,6 +68,29 @@ export const PosterPlaceholder = styled.div`
   padding: ${(props) => props.theme?.spacing?.md || "1rem"};
 `
 
+export const FavoriteButton = styled.button`
+  position: absolute;
+  top: ${(props) => props.theme?.spacing?.sm || "0.5rem"};
+  right: ${(props) => props.theme?.spacing?.sm || "0.5rem"};
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: "white";
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 1;
+
+  &:hover {
+    transform: scale(1.1);
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+`
+
 export const Content = styled.div`
   padding: ${(props) => props.theme?.spacing?.md || "1rem"};
   display: flex;

@@ -1,7 +1,4 @@
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { Calendar, Star } from "lucide-react"
+import { Calendar, Heart, Star } from "lucide-react"
 import {
   Card,
   PosterContainer,
@@ -13,6 +10,7 @@ import {
   Poster,
   PosterPlaceholder,
   Overview,
+  FavoriteButton,
 } from "./style"
 
 export default function MovieCard({ movie }: any) {
@@ -37,6 +35,10 @@ export default function MovieCard({ movie }: any) {
         <PosterPlaceholder style={{ display: movie.poster_path ? "none" : "flex" }}>
           No Image Available
         </PosterPlaceholder>
+
+        <FavoriteButton>
+          <Heart size={16} />
+        </FavoriteButton>
       </PosterContainer>
 
       <Content>

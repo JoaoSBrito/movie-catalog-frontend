@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { HeaderContainer, HeaderContent, Logo, SearchContainer, SearchIcon, SearchInput } from "./style";
-import { Film } from "lucide-react";
+import { FavoriteContainer, FavoriteLink, HeaderContainer, HeaderContent, Logo, SearchContainer, SearchIcon, SearchInput } from "./style";
+import { Film, Heart } from "lucide-react";
+import Link from "next/link";
 
 interface HeaderProps {
   onSearch: (query: string) => void;
@@ -27,10 +28,12 @@ export default function Header({ onSearch }: HeaderProps) {
   return (
     <HeaderContainer>
       <HeaderContent>
-        <Logo>
-          <Film size={32} />
-          Catálogo de filmes
-        </Logo>
+        <Link href="/">
+          <Logo>
+            <Film size={32} />
+            Catálogo de filmes
+          </Logo>
+        </Link>
 
         <SearchContainer>
           <form onSubmit={handleSubmit}>
@@ -43,6 +46,15 @@ export default function Header({ onSearch }: HeaderProps) {
             />
           </form>
         </SearchContainer>
+
+        <FavoriteContainer>
+          <Link href="/favorite">
+            <FavoriteLink>
+              <Heart size={18} />
+              <span>Favoritos</span>
+            </FavoriteLink>
+          </Link>
+        </FavoriteContainer>
       </HeaderContent>
     </HeaderContainer>
   );
