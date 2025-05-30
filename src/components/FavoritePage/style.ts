@@ -43,19 +43,16 @@ export const FavoriteEmpty = styled.div`
   padding: ${(props) => props.theme?.spacing?.xxl || "3rem"} 0;
   max-width: 500px;
   margin: 0 auto;
+  gap: 1rem;
 
   h1 {
     font-size: 1.5rem;
     font-weight: 600;
     color: ${(props) => props.theme?.colors?.text || "#ffffff"};
-    margin-bottom: ${(props) => props.theme?.spacing?.md || "1rem"};
   }
 
   p {
     color: ${(props) => props.theme?.colors?.textSecondary || "#a0aec0"};
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: ${(props) => props.theme?.spacing?.xl || "2rem"};
   }
 `
 
