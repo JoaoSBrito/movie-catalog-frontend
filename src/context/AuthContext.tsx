@@ -11,7 +11,7 @@ interface AuthContextProps {
   user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
-  register: (name: string, email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string, confirmPassword: string) => Promise<boolean>;
   loading: boolean;
   error: string | null;
   setError: React.Dispatch<React.SetStateAction<string | null>>
@@ -63,12 +63,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (name: string, email: string, password: string, confirmPassword: string) => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await axios.post('http://localhost:80/api/register', { name, email, password });
+      const response = await axios.post('http://localhost:80/api/register', { name, email, password, password_confirmation: confirmPassword });
       setUser(response.data.user);
       localStorage.setItem('token', response.data.token);
       setLoading(false);

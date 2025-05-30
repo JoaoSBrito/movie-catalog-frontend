@@ -34,7 +34,7 @@ export default function AuthModal({ onClose }: AuthModalProps) {
       if (isLogin) {
         status = await login(email, password)
       } else {
-        status = await register(name, email, password)
+        status = await register(name, email, password, confirmPassword)
       }
       if (status) {
         onClose();
