@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import MovieCard from "../MovieCard";
 import useMovies, { MovieCategory } from "@/hooks/useMovies";
+import Loading from "../Loading";
 
 interface MovieSectionProps {
   title: string;
@@ -16,9 +17,7 @@ export default function MovieSection({ category, title, search }: MovieSectionPr
 
   const { data, loading, error } = useMovies({ category, search });
 
-  if (loading) return <p>Carregando...</p>
   if (error) return <p>Erro: {error}</p>
-  if (!data) return null;
 
   const scrollLeft = () => {
     if (carouselRef.current) {
@@ -45,8 +44,9 @@ export default function MovieSection({ category, title, search }: MovieSectionPr
     <SectionContainer>
       <SectionTitle>{title}</SectionTitle>
 
-
-      {!loading && !error && (
+      {loading && <Loading />}
+      
+      {!loading && (
         <>
           {search ? (
             <MoviesGrid>
@@ -61,7 +61,7 @@ export default function MovieSection({ category, title, search }: MovieSectionPr
 
               <CarouselWrapper>
                 <MoviesCarousel ref={carouselRef}>
-                  {data.map((movie) => (
+                  {data?.map((movie) => (
                     <MovieCard key={movie.id} movie={movie} />
                   ))}
                 </MoviesCarousel>

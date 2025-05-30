@@ -39,7 +39,7 @@ export default function Header({ onSearch }: HeaderProps) {
     <Fragment>
       <HeaderContainer>
         <HeaderContent>
-          <Link href="/">
+          <Link href="/" onClick={() => {onSearch(""); setSearchQuery("")}}>
             <Logo>
               <Film size={32} />
               Catálogo de filmes
