@@ -16,9 +16,12 @@ import {
 } from "./style"
 import React from "react"
 import { useFavorites } from "@/hooks/useFavorites";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function MovieCard({ movie }: any) {
   const { toggleFavorite, isFavorite } = useFavorites();
+  const { user } = useAuth();
+
 
   const formatDate = (dateString: string) => {
     if (!dateString) return "TBA"
@@ -32,6 +35,9 @@ export default function MovieCard({ movie }: any) {
 
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!user) {
+      alert("Você precisa estar logado para adicionar um favorito")
+    }
     toggleFavorite(movie)
   }
 
