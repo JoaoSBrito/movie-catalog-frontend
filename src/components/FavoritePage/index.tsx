@@ -85,24 +85,30 @@ export default function FavoritePage() {
                 </div>
               )}
 
-              {!user ? (
+          {!user ? (
+            <FavoriteEmpty>
+              <AlertCircle size={64} />
+              <h1>Não possui favoritos</h1>
+              <p>Para visualizar seus favoritos é necessário estar logado!</p>
+              <FavoriteLoginButton onClick={() => setOpenModal(true)}>Entrar</FavoriteLoginButton>
+            </FavoriteEmpty>
+          ) : (
+            <Fragment>
+              {filteredFavorites.length > 0 ? (
+                <MoviesGrid>
+                  {filteredFavorites?.map((movie: Movie) => (
+                    <MovieCard key={movie.id} movie={movie} />
+                  ))}
+                </MoviesGrid>
+              ) : (
                 <FavoriteEmpty>
                   <AlertCircle size={64} />
                   <h1>Não possui favoritos</h1>
-                  <p>Para visualizar seus favoritos é necessário estar logado!</p>
-                  <FavoriteLoginButton onClick={() => setOpenModal(true)}>Entrar</FavoriteLoginButton>
+                  <p>Para visualizar é necessário favoritar!</p>
                 </FavoriteEmpty>
-              ) : (
-                <MoviesGrid>
-                  {filteredFavorites.length > 0 && (
-                    <Fragment>
-                      {filteredFavorites?.map((movie: Movie) => (
-                        <MovieCard key={movie.id} movie={movie} />
-                      ))}
-                    </Fragment>
-                  )}
-                </MoviesGrid>
               )}
+            </Fragment>
+          )}
             </Fragment>
           )}
         </FavoriteContent>
