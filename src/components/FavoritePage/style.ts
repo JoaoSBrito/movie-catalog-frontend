@@ -80,35 +80,4 @@ export const FavoriteLoginButton = styled.button`
   }
 `
 
-export const GenreSelect = styled.select`
-  padding: ${(props) => props.theme?.spacing?.sm || "0.75rem"};
-  background-color: ${(props) => props.theme?.colors?.background || "#13344f"};
-  color: ${(props) => props.theme?.colors?.text || "#ffffff"};
-  border: 1px solid ${(props) => props.theme?.colors?.primary || "#01b4e4"};
-  border-radius: ${(props) => props.theme?.borderRadius?.md || "8px"};
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 1rem 0;
-  width: 100%;
-  max-width: 200px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    border-color: ${(props) => props.theme?.colors?.accent || "#ffd700"};
-    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
-  }
-
-  &:focus {
-    outline: none;
-    border-color: ${(props) => props.theme?.colors?.secondary || "#90cea1"};
-    box-shadow: 0 0 0 3px rgba(144, 206, 161, 0.3);
-  }
-
-  option {
-    background-color: ${(props) => props.theme?.colors?.background || "#0d253f"};
-    color: ${(props) => props.theme?.colors?.text || "#ffffff"};
-  }
-`;
-
 
