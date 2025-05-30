@@ -1,6 +1,5 @@
-/* eslint-disable */
 import { Fragment, useCallback, useState } from "react";
-import { FavoriteContainer, FavoritesTitle, FavoriteContent, FavoriteEmpty, FavoriteLoginButton } from "./style";
+import { FavoriteContainer, FavoritesTitle, FavoriteContent, FavoriteEmpty, FavoriteLoginButton, GenreSelect } from "./style";
 import { MoviesGrid } from "../MovieSection/style";
 import { AlertCircle, Heart } from "lucide-react";
 
@@ -15,6 +14,7 @@ import { Movie } from "@/hooks/useMovies";
 export default function FavoritePage() {
   const [search, setSearch] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [selectedGenreId, setSelectedGenreId] = useState<number | null>(null);
 
   const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) {
@@ -33,6 +33,20 @@ export default function FavoritePage() {
     setOpenModal(false);
   }
 
+    const uniqueGenres = Array.from(
+    new Map(
+      favorites
+        .flatMap((movie: Movie) => movie.genres || [])
+        .map((genre: Movie) => [genre.id, genre])
+    ).values()
+  );
+
+  const filteredFavorites = selectedGenreId
+    ? favorites.filter((movie: Movie) =>
+      movie.genres?.some((genre) => genre.id === selectedGenreId)
+    )
+    : favorites;
+
   return (
     <Fragment>
       <FavoriteContainer>
@@ -44,6 +58,28 @@ export default function FavoritePage() {
             Meus Favoritos
           </FavoritesTitle>
 
+          {user && uniqueGenres.length > 0 && (
+            <div style={{ margin: "1rem 0" }}>
+              <label htmlFor="genre-select">Filtrar por gênero: </label>
+              <GenreSelect
+                id="genre-select"
+                value={selectedGenreId ?? ""}
+                onChange={(e) =>
+                  setSelectedGenreId(
+                    e.target.value ? Number(e.target.value) : null
+                  )
+                }
+              >
+                <option value="">Todos os gêneros</option>
+                {uniqueGenres.map((genre: any) => (
+                  <option key={genre.id} value={genre.id}>
+                    {genre.name}
+                  </option>
+                ))}
+              </GenreSelect>
+            </div>
+          )}
+
           {!user ? (
             <FavoriteEmpty>
               <AlertCircle size={64} />
@@ -53,9 +89,9 @@ export default function FavoritePage() {
             </FavoriteEmpty>
           ) : (
             <MoviesGrid>
-              {favorites.length > 0 && (
+              {filteredFavorites.length > 0 && (
                 <Fragment>
-                  {favorites?.map((movie: Movie) => (
+                  {filteredFavorites?.map((movie: Movie) => (
                     <MovieCard key={movie.id} movie={movie} />
                   ))}
                 </Fragment>
