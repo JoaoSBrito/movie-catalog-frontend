@@ -20,8 +20,6 @@ export default function MovieSection({ category, title, search }: MovieSectionPr
   if (error) return <p>Erro: {error}</p>
   if (!data) return null;
 
-  console.log(`category: ${category}`, data);
-
   const scrollLeft = () => {
     if (carouselRef.current) {
       const scrollAmount = carouselRef.current.clientWidth * 0.8
