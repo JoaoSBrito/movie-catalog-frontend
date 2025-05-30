@@ -1,7 +1,5 @@
-"use client";
-
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 interface User {
   id: string;
@@ -17,8 +15,7 @@ interface AuthContextProps {
   loading: boolean;
 }
 
-const AuthContext = React.createContext<AuthContextProps>({} as AuthContextProps);
-
+export const AuthContext = React.createContext<AuthContextProps>({} as AuthContextProps);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -29,6 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const response = await axios.post('http://localhost:80/api/login', { email, password });
       setUser(response.data);
       localStorage.setItem('token', response.data.token);
+      axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
     }
     catch (error) {
       console.error("Login failed:", error);
@@ -62,9 +60,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
+  const fetchUser = useCallback(async () => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      try {
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+        const response = await axios.get('http://localhost:80/api/user');
+        setUser(response.data);
+      } catch (error) {
+        console.error('Erro ao restaurar sessão:', error);
+        setUser(null);
+        localStorage.removeItem('token');
+      }
+    }
+    setLoading(false);
+  }, [])
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser])
+
   return (
     <AuthContext.Provider value={{ user, login, logout, register, loading }}>{children}</AuthContext.Provider>
   )
 }
-
-export const useAuth = () => useContext(AuthContext);

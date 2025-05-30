@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { AuthContainer, AuthFooter, AuthForm, AuthHeader, AuthLink, AuthSubtitle, AuthTitle, FormGroup, FormInput, FormInputWrapper, FormLabel, SubmitButton } from "./style";
+import { useAuth } from "@/hooks/useAuth";
 
-import { useAuth } from "@/context/AuthContext";
 
 interface AuthModalProps {
   onClose: () => void;
@@ -26,7 +26,7 @@ export default function AuthModal({ onClose }: AuthModalProps) {
     console.log('teste');
 
     if (isLogin) {
-      const res = await login(email, password)
+      await login(email, password)
       onClose();
     }
   }

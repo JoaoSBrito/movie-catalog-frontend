@@ -68,7 +68,7 @@ export const PosterPlaceholder = styled.div`
   padding: ${(props) => props.theme?.spacing?.md || "1rem"};
 `
 
-export const FavoriteButton = styled.button`
+export const FavoriteButton = styled.button<{ isFavorite: boolean }>`
   position: absolute;
   top: ${(props) => props.theme?.spacing?.sm || "0.5rem"};
   right: ${(props) => props.theme?.spacing?.sm || "0.5rem"};
@@ -76,14 +76,14 @@ export const FavoriteButton = styled.button`
   height: 32px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.6);
-  color: "white";
+  color: ${(props) => (props.isFavorite ? props.theme?.colors?.accent || "#ffd700" : "white")};
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  opacity: 1;
+  opacity: 1; /* Always visible now */
 
   &:hover {
     transform: scale(1.1);

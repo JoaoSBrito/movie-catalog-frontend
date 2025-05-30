@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Calendar, Heart, Star } from "lucide-react"
 import {
   Card,
@@ -12,8 +14,12 @@ import {
   Overview,
   FavoriteButton,
 } from "./style"
+import React from "react"
+import useFavorites from "@/hooks/useFavorite";
 
-export default function MovieCard({ movie }: any) {
+export default function MovieCard({ movie, toggleFavorite }: any) {
+  const { isFavorite } = useFavorites();
+
   const formatDate = (dateString: string) => {
     if (!dateString) return "TBA"
     const date = new Date(dateString)
@@ -22,6 +28,11 @@ export default function MovieCard({ movie }: any) {
 
   const formatRating = (rating: number) => {
     return rating ? rating.toFixed(1) : "N/A"
+  }
+
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleFavorite(movie)
   }
 
   return (
@@ -36,7 +47,7 @@ export default function MovieCard({ movie }: any) {
           No Image Available
         </PosterPlaceholder>
 
-        <FavoriteButton>
+        <FavoriteButton onClick={handleFavorite} isFavorite={isFavorite(movie.id)}>
           <Heart size={16} />
         </FavoriteButton>
       </PosterContainer>
