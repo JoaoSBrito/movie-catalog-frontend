@@ -47,9 +47,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
     catch (error) {
       setLoading(false);
-
-      const axiosError = error as AxiosError<{ message: string }>
-      setError((axiosError).response?.data.message || 'Erro inesperado')
+      setError((error as any).response.data.message)
       return false;
     }
   }
@@ -77,9 +75,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return true;
     } catch (error) {
       setLoading(false);
-
-      const axiosError = error as AxiosError<{ message: string }>
-      setError(axiosError.response?.data.message || 'Erro inesperado')
+      setError((error as any).response.data.message)
       return false
     }
   }

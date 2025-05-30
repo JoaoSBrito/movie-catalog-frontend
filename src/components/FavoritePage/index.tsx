@@ -12,11 +12,6 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { useAuth } from "@/hooks/useAuth";
 import { Movie } from "@/hooks/useMovies";
 
-interface Genre {
-  id: number;
-  name: string;
-}
-
 export default function FavoritePage() {
   const [search, setSearch] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -43,7 +38,7 @@ export default function FavoritePage() {
     new Map(
       favorites
         .flatMap((movie: Movie) => movie.genres || [])
-        .map((genre: Genre) => [genre.id, genre])
+        .map((genre: Movie) => [genre.id, genre])
     ).values()
   );
 
