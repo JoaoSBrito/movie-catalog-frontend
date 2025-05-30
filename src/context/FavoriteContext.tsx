@@ -1,8 +1,15 @@
 import { Movie } from "@/hooks/useMovies";
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 
-const FavoriteContext = React.createContext<any>({} as any);
+const defaultProvider = {
+  favorites: [],
+  isFavorite: () => null,
+  toggleFavorite: () => null
+}
+
+
+export const FavoriteContext = React.createContext<any>(defaultProvider as any);
 
 export const FavoriteProvider = ({ children }: { children: React.ReactNode }) => {
   const [favorites, setFavorites] = useState<Movie[]>([])
@@ -15,10 +22,10 @@ export const FavoriteProvider = ({ children }: { children: React.ReactNode }) =>
       });
 
       setFavorites((prev) => {
-        if (prev.some((m) => m.id === movie.id)) {
+        if (prev?.length && prev?.some((m) => m.id === movie.id)) {
           return prev
         }
-        return [...prev, movie]
+        return [...(prev ?? []), movie]
       })
     } catch (error) {
       console.log(error);
@@ -28,13 +35,15 @@ export const FavoriteProvider = ({ children }: { children: React.ReactNode }) =>
   const removeFavorite = async (movieId: number) => {
     try {
       await axios.delete(`http://localhost:80/api/favorite/${movieId}`);
-      setFavorites((prev) => prev.filter((movie) => movie.id !== movieId))
+      setFavorites((prev) => prev?.filter((movie) => movie.id !== movieId))
     } catch (error) {
       console.log(error);
     }
   }
 
   const isFavorite = (movieId: number) => {
+    if (!favorites) return false
+
     return favorites.some((movie) => movie.id === movieId)
   }
 
@@ -46,27 +55,32 @@ export const FavoriteProvider = ({ children }: { children: React.ReactNode }) =>
     }
   };
 
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      setLoading(true)
+  const fetchFavorites = useCallback(async () => {
+    // setLoading(true)
+    // setError(null);
 
-      try {
+
+    try {
+      const token = localStorage.getItem('token');
+      console.log('fetch', token, favorites.length);
+
+      if (token && !favorites.length) {
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
         const response = await axios.get('http://localhost:80/api/favorite');
-        setFavorites(response.data.results)
-      } catch (err: any) {
-        console.log(err);
-      } finally {
-        setLoading(false)
+        setFavorites(response.data.favorites)
       }
+    } catch (err: any) {
+      // setError(err.message || 'Erro ao buscar os filmes');
+    } finally {
+      // setLoading(false)
     }
+  }, [favorites])
 
+  useEffect(() => {
     fetchFavorites();
-  }, [])
-
+  }, [fetchFavorites])
 
   return (
     <FavoriteContext.Provider value={{ favorites, isFavorite, toggleFavorite, loading }}>{children}</FavoriteContext.Provider>
   )
 }
-
-export const useFavorite = () => useContext(FavoriteContext);

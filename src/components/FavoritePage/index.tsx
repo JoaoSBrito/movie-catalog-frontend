@@ -8,7 +8,7 @@ import Header from "../Header";
 import AuthModal from "../AuthModal";
 import Modal from "../Modal";
 import MovieCard from "../MovieCard";
-import useFavorites from "@/hooks/useFavorite";
+import { useFavorites } from "@/hooks/useFavorites";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function FavoritePage() {
@@ -24,12 +24,8 @@ export default function FavoritePage() {
     setSearch(query);
   }, []);
 
-  // const { user } = useAuth();
+  const { user } = useAuth();
   const { favorites } = useFavorites();
-
-  console.log(favorites);
-
-  return <h1>favorites</h1>
 
   return (
     <Fragment>
@@ -44,7 +40,13 @@ export default function FavoritePage() {
 
           <MoviesGrid>
             {/* .map com movieCard e favoritos */}
-            {/* {!user ? (
+            {/* {!user && (
+              <Fragment>
+                <div>Você não esta logado</div>
+                <button onClick={() => setOpenModal(true)}>Login</button>
+              </Fragment>
+            )} */}
+            {!user ? (
               <Fragment>
                 <div>Você não esta logado</div>
                 <button onClick={() => setOpenModal(true)}>Login</button>
@@ -55,7 +57,7 @@ export default function FavoritePage() {
                   <MovieCard key={movie.id} movie={movie} />
                 ))}
               </Fragment>
-            )} */}
+            )}
 
           </MoviesGrid>
         </FavoriteContent>

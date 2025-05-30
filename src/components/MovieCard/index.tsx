@@ -15,10 +15,10 @@ import {
   FavoriteButton,
 } from "./style"
 import React from "react"
-import useFavorites from "@/hooks/useFavorite";
+import { useFavorites } from "@/hooks/useFavorites";
 
-export default function MovieCard({ movie, toggleFavorite }: any) {
-  const { isFavorite } = useFavorites();
+export default function MovieCard({ movie }: any) {
+  const { toggleFavorite, isFavorite } = useFavorites();
 
   const formatDate = (dateString: string) => {
     if (!dateString) return "TBA"
