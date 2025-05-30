@@ -31,6 +31,7 @@ export const AuthForm = styled.form`
 `
 
 export const FormGroup = styled.div`
+  width:100%; 
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.theme?.spacing?.xs || "0.25rem"};
@@ -42,13 +43,8 @@ export const FormLabel = styled.label`
   color: ${(props) => props.theme?.colors?.text || "#ffffff"};
 `
 
-export const FormInputWrapper = styled.div`
-  position: relative;
-`
-
 export const FormInput = styled.input`
-  width: 100%;
-  padding: ${(props) => props.theme?.spacing?.md || "1rem"} ${(props) => props.theme?.spacing?.md || "1rem"} ${(props) => props.theme?.spacing?.md || "1rem"} 3rem;
+  padding: ${(props) => props.theme?.spacing?.md || "1rem"} ${(props) => props.theme?.spacing?.md || "1rem"} ${(props) => props.theme?.spacing?.md || "1rem"} 2rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: ${(props) => props.theme?.borderRadius?.md || "8px"};
   background-color: rgba(0, 0, 0, 0.2);

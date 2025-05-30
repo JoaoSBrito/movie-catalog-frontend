@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { AuthContainer, AuthFooter, AuthForm, AuthHeader, AuthLink, AuthSubtitle, AuthTitle, ErrorMessage, FormGroup, FormInput, FormInputWrapper, FormLabel, SubmitButton } from "./style";
+import { AuthContainer, AuthFooter, AuthForm, AuthHeader, AuthLink, AuthSubtitle, AuthTitle, ErrorMessage, FormGroup, FormInput, FormLabel, SubmitButton } from "./style";
 import { useAuth } from "@/hooks/useAuth";
 
 
@@ -57,7 +57,6 @@ export default function AuthModal({ onClose }: AuthModalProps) {
           <Fragment>
             <FormGroup>
               <FormLabel htmlFor="email">Email</FormLabel>
-              <FormInputWrapper>
                 <FormInput
                   id="email"
                   type="email"
@@ -66,12 +65,10 @@ export default function AuthModal({ onClose }: AuthModalProps) {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-              </FormInputWrapper>
             </FormGroup>
 
             <FormGroup>
               <FormLabel htmlFor="password">Senha</FormLabel>
-              <FormInputWrapper>
                 <FormInput
                   id="password"
                   type="password"
@@ -80,7 +77,6 @@ export default function AuthModal({ onClose }: AuthModalProps) {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-              </FormInputWrapper>
             </FormGroup>
           </Fragment>
         )}
@@ -89,7 +85,6 @@ export default function AuthModal({ onClose }: AuthModalProps) {
           <Fragment>
             <FormGroup>
               <FormLabel htmlFor="name">Nome</FormLabel>
-              <FormInputWrapper>
                 <FormInput
                   id="name"
                   type="text"
@@ -98,12 +93,10 @@ export default function AuthModal({ onClose }: AuthModalProps) {
                   onChange={(e) => setName(e.target.value)}
                   required
                 />
-              </FormInputWrapper>
             </FormGroup>
 
             <FormGroup>
               <FormLabel htmlFor="email">Email</FormLabel>
-              <FormInputWrapper>
                 <FormInput
                   id="email"
                   type="email"
@@ -112,12 +105,10 @@ export default function AuthModal({ onClose }: AuthModalProps) {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-              </FormInputWrapper>
             </FormGroup>
 
             <FormGroup>
               <FormLabel htmlFor="password">Senha</FormLabel>
-              <FormInputWrapper>
                 <FormInput
                   id="password"
                   type="password"
@@ -126,12 +117,10 @@ export default function AuthModal({ onClose }: AuthModalProps) {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-              </FormInputWrapper>
             </FormGroup>
 
             <FormGroup>
               <FormLabel htmlFor="confirmPassword">Confirme sua senha</FormLabel>
-              <FormInputWrapper>
                 <FormInput
                   id="confirmPassword"
                   type="password"
@@ -140,7 +129,6 @@ export default function AuthModal({ onClose }: AuthModalProps) {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 />
-              </FormInputWrapper>
             </FormGroup>
           </Fragment>
         )}
