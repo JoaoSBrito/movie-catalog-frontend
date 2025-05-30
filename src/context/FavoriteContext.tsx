@@ -87,6 +87,13 @@ export const FavoriteProvider = ({ children }: { children: React.ReactNode }) =>
     fetchFavorites();
   }, [fetchFavorites])
 
+  useEffect(() => {
+    if (!user) {
+      setFavorites([])
+      setFetched(false)
+    }
+  }, [user])
+
   return (
     <FavoriteContext.Provider value={{ favorites, isFavorite, toggleFavorite, loading }}>{children}</FavoriteContext.Provider>
   )
