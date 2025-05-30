@@ -1,16 +1,24 @@
+import React, { useCallback, useEffect, useState } from "react";
+import axios from "axios";
+
 import { useAuth } from "@/hooks/useAuth";
 import { Movie } from "@/hooks/useMovies";
-import axios from "axios";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+
+interface FavoriteContextProps {
+  favorites: Movie[];
+  isFavorite: (id: number) => void;
+  toggleFavorite: (movie: Movie) => void;
+  loading: boolean;
+}
 
 const defaultProvider = {
   favorites: [],
   isFavorite: () => null,
-  toggleFavorite: () => null
+  toggleFavorite: () => null,
+  loading: true
 }
 
-
-export const FavoriteContext = React.createContext<any>(defaultProvider as any);
+export const FavoriteContext = React.createContext<FavoriteContextProps>(defaultProvider as FavoriteContextProps);
 
 export const FavoriteProvider = ({ children }: { children: React.ReactNode }) => {
   const [favorites, setFavorites] = useState<Movie[]>([])
@@ -63,9 +71,7 @@ export const FavoriteProvider = ({ children }: { children: React.ReactNode }) =>
   };
 
   const fetchFavorites = useCallback(async () => {
-    // setLoading(true)
-    // setError(null);
-
+    setLoading(true)
 
     try {
       const token = localStorage.getItem('token');
@@ -76,12 +82,12 @@ export const FavoriteProvider = ({ children }: { children: React.ReactNode }) =>
         setFavorites(response.data.favorites)
         setFetched(true);
       }
-    } catch (err: any) {
-      // setError(err.message || 'Erro ao buscar os filmes');
+    } catch (err) {
+      console.log(err);
     } finally {
-      // setLoading(false)
+      setLoading(false)
     }
-  }, [favorites, fetched, user])
+  }, [favorites, fetched])
 
   useEffect(() => {
     fetchFavorites();
