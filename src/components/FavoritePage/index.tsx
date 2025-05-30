@@ -25,8 +25,13 @@ export default function FavoritePage() {
     setSearch(query);
   }, []);
 
-  const { user } = useAuth();
+  const { user, setError } = useAuth();
   const { favorites } = useFavorites();
+
+  const closeModal = () => {
+    setError(null)
+    setOpenModal(false);
+  }
 
   return (
     <Fragment>
@@ -60,8 +65,8 @@ export default function FavoritePage() {
         </FavoriteContent>
       </FavoriteContainer>
 
-      <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>
-        <AuthModal onClose={() => setOpenModal(false)} />
+      <Modal isOpen={openModal} onClose={closeModal}>
+        <AuthModal onClose={closeModal} />
       </Modal>
     </Fragment>
   );

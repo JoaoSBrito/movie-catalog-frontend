@@ -1,3 +1,4 @@
+import { useAuth } from "@/hooks/useAuth";
 import { Movie } from "@/hooks/useMovies";
 import axios from "axios";
 import React, { useCallback, useContext, useEffect, useState } from "react";
@@ -14,9 +15,15 @@ export const FavoriteContext = React.createContext<any>(defaultProvider as any);
 export const FavoriteProvider = ({ children }: { children: React.ReactNode }) => {
   const [favorites, setFavorites] = useState<Movie[]>([])
   const [loading, setLoading] = useState<boolean>(true);
+  const [fetched, setFetched] = useState<boolean>(false)
+
+  const { user } = useAuth()
 
   const addFavorite = async (movie: Movie) => {
     try {
+      const token = localStorage.getItem('token')
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+
       await axios.post('http://localhost:80/api/favorite', {
         tmdb_id: movie.id,
       });
@@ -62,19 +69,19 @@ export const FavoriteProvider = ({ children }: { children: React.ReactNode }) =>
 
     try {
       const token = localStorage.getItem('token');
-      console.log('fetch', token, favorites.length);
 
-      if (token && !favorites.length) {
+      if (token && !favorites.length && !fetched) {
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
         const response = await axios.get('http://localhost:80/api/favorite');
         setFavorites(response.data.favorites)
+        setFetched(true);
       }
     } catch (err: any) {
       // setError(err.message || 'Erro ao buscar os filmes');
     } finally {
       // setLoading(false)
     }
-  }, [favorites])
+  }, [favorites, fetched, user])
 
   useEffect(() => {
     fetchFavorites();

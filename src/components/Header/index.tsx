@@ -13,7 +13,7 @@ export default function Header({ onSearch }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [openModal, setOpenModal] = useState(false);
 
-  const { user, logout } = useAuth();
+  const { user, logout, setError } = useAuth();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
@@ -28,6 +28,11 @@ export default function Header({ onSearch }: HeaderProps) {
 
     if (!searchQuery.trim()) return;
     onSearch(searchQuery.trim());
+  }
+
+  const closeModal = () => {
+    setError(null);
+    setOpenModal(false);
   }
 
   return (
@@ -78,8 +83,8 @@ export default function Header({ onSearch }: HeaderProps) {
         </HeaderContent>
       </HeaderContainer>
 
-      <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>
-        <AuthModal onClose={() => setOpenModal(false)} />
+      <Modal isOpen={openModal} onClose={closeModal}>
+        <AuthModal onClose={closeModal} />
       </Modal>
     </Fragment>
   );

@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { AuthContainer, AuthFooter, AuthForm, AuthHeader, AuthLink, AuthSubtitle, AuthTitle, FormGroup, FormInput, FormInputWrapper, FormLabel, SubmitButton } from "./style";
+import { AuthContainer, AuthFooter, AuthForm, AuthHeader, AuthLink, AuthSubtitle, AuthTitle, ErrorMessage, FormGroup, FormInput, FormInputWrapper, FormLabel, SubmitButton } from "./style";
 import { useAuth } from "@/hooks/useAuth";
 
 
@@ -14,7 +14,7 @@ export default function AuthModal({ onClose }: AuthModalProps) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
 
-  const { login, register } = useAuth();
+  const { login, register, setError, error } = useAuth();
 
   const toggleAuthMode = () => {
     setIsLogin((prev) => !prev);
@@ -22,16 +22,25 @@ export default function AuthModal({ onClose }: AuthModalProps) {
     setPassword("");
     setConfirmPassword("");
     setName("");
+    setError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (isLogin) {
-      await login(email, password)
-      onClose();
-    } else {
-      await register(name, email, password)
+    try {
+      let status = true;
+
+      if (isLogin) {
+        status = await login(email, password)
+      } else {
+        status = await register(name, email, password)
+      }
+      if (status) {
+        onClose();
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -41,6 +50,7 @@ export default function AuthModal({ onClose }: AuthModalProps) {
         <AuthTitle>{isLogin ? 'Seja bem  vindo' : 'Crie sua conta'}</AuthTitle>
         <AuthSubtitle>{isLogin ? 'Entre para acessar seus favoritos' : 'Registre para acessar seus favoritos'}</AuthSubtitle>
       </AuthHeader>
+      {error && (<ErrorMessage>{error}</ErrorMessage>)}
 
       <AuthForm onSubmit={handleSubmit}>
         {isLogin && (

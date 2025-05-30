@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 
 interface User {
@@ -9,20 +9,22 @@ interface User {
 
 interface AuthContextProps {
   user: User | null;
-  login: (email: string, password: string) => void;
+  login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
-  register: (name: string, email: string, password: string) => void;
+  register: (name: string, email: string, password: string) => Promise<boolean>;
   loading: boolean;
-  error: string | null
+  error: string | null;
+  setError: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const defaultProvider = {
   user: null,
-  login: () => null,
+  login: async () => false,
   logout: () => null,
-  register: () => null,
+  register: async () => false,
   loading: true,
-  error: null
+  error: null,
+  setError: () => null
 }
 
 export const AuthContext = React.createContext<AuthContextProps>(defaultProvider as AuthContextProps);
@@ -40,13 +42,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const response = await axios.post('http://localhost:80/api/login', { email, password });
       setUser(response.data);
       localStorage.setItem('token', response.data.token);
+      setLoading(false);
+      return true;
     }
     catch (error) {
-      console.error("Login failed:", error);
-      setError('Falha no login')
-    }
-    finally {
       setLoading(false);
+      setError((error as any).response.data.message)
+      return false;
     }
   }
 
@@ -63,14 +65,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const register = async (name: string, email: string, password: string) => {
     setLoading(true);
+    setError(null);
+
     try {
       const response = await axios.post('http://localhost:80/api/register', { name, email, password });
       setUser(response.data.user);
       localStorage.setItem('token', response.data.token);
-    } catch (error) {
-      console.error("Registration failed:", error);
-    } finally {
       setLoading(false);
+      return true;
+    } catch (error) {
+      setLoading(false);
+      setError((error as any).response.data.message)
+      return false
     }
   }
 
@@ -95,6 +101,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [fetchUser])
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, loading, error }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, login, logout, register, loading, error, setError }}>{children}</AuthContext.Provider>
   )
 }

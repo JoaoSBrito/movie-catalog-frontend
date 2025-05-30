@@ -117,3 +117,13 @@ export const AuthLink = styled.button`
     text-decoration: underline;
   }
 `
+
+export const ErrorMessage = styled.div`
+  background-color: rgba(229, 62, 62, 0.1);
+  border-left: 3px solid ${(props) => props.theme?.colors?.error || "#e53e3e"};
+  color: ${(props) => props.theme?.colors?.error || "#e53e3e"};
+  padding: ${(props) => props.theme?.spacing?.md || "1rem"};
+  border-radius: ${(props) => props.theme?.borderRadius?.sm || "4px"};
+  font-size: 0.9rem;
+  margin-bottom: ${(props) => props.theme?.spacing?.md || "1rem"};
+`
