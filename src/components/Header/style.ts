@@ -116,3 +116,23 @@ export const FavoriteLink = styled.button`
   }
 `
 
+export const LoginLink = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${(props) => props.theme?.spacing?.xs || "0.25rem"};
+  padding: ${(props) => props.theme?.spacing?.sm || "0.5rem"} ${(props) => props.theme?.spacing?.md || "1rem"};
+  border-radius: ${(props) => props.theme?.borderRadius?.md || "8px"};
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+`
+

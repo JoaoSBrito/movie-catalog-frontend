@@ -1,14 +1,19 @@
-import { useState } from "react";
-import { FavoriteContainer, FavoriteLink, HeaderContainer, HeaderContent, Logo, SearchContainer, SearchIcon, SearchInput } from "./style";
-import { Film, Heart } from "lucide-react";
+import { Fragment, useState } from "react";
+import { FavoriteContainer, FavoriteLink, HeaderContainer, HeaderContent, LoginLink, Logo, SearchContainer, SearchIcon, SearchInput } from "./style";
+import { Film, Heart, LogOut, User } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/hooks/useAuth";
+import AuthModal from "../AuthModal";
+import Modal from "../Modal";
 
 interface HeaderProps {
   onSearch: (query: string) => void;
 }
 export default function Header({ onSearch }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
+  const { user, logout } = useAuth();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
@@ -26,36 +31,56 @@ export default function Header({ onSearch }: HeaderProps) {
   }
 
   return (
-    <HeaderContainer>
-      <HeaderContent>
-        <Link href="/">
-          <Logo>
-            <Film size={32} />
-            Catálogo de filmes
-          </Logo>
-        </Link>
-
-        <SearchContainer>
-          <form onSubmit={handleSubmit}>
-            <SearchIcon />
-            <SearchInput
-              type="text"
-              placeholder="Pesquisar..."
-              value={searchQuery}
-              onChange={handleChange}
-            />
-          </form>
-        </SearchContainer>
-
-        <FavoriteContainer>
-          <Link href="/favorite">
-            <FavoriteLink>
-              <Heart size={18} />
-              <span>Favoritos</span>
-            </FavoriteLink>
+    <Fragment>
+      <HeaderContainer>
+        <HeaderContent>
+          <Link href="/">
+            <Logo>
+              <Film size={32} />
+              Catálogo de filmes
+            </Logo>
           </Link>
-        </FavoriteContainer>
-      </HeaderContent>
-    </HeaderContainer>
+
+          <SearchContainer>
+            <form onSubmit={handleSubmit}>
+              <SearchIcon />
+              <SearchInput
+                type="text"
+                placeholder="Pesquisar..."
+                value={searchQuery}
+                onChange={handleChange}
+              />
+            </form>
+          </SearchContainer>
+
+          <FavoriteContainer>
+            <Link href="/favorite">
+              <FavoriteLink>
+                <Heart size={18} />
+                <span>Favoritos</span>
+              </FavoriteLink>
+            </Link>
+
+            <LoginLink onClick={user ? logout : () => setOpenModal(true)}>
+              {user ? (
+                <Fragment>
+                  <LogOut size={18} />
+                  Sair
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <User size={18} />
+                  Entrar
+                </Fragment>
+              )}
+            </LoginLink>
+          </FavoriteContainer>
+        </HeaderContent>
+      </HeaderContainer>
+
+      <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>
+        <AuthModal onClose={() => setOpenModal(false)} />
+      </Modal>
+    </Fragment>
   );
 }

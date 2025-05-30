@@ -13,6 +13,7 @@ interface AuthContextProps {
   logout: () => void;
   register: (name: string, email: string, password: string) => void;
   loading: boolean;
+  error: string | null
 }
 
 const defaultProvider = {
@@ -20,16 +21,21 @@ const defaultProvider = {
   login: () => null,
   logout: () => null,
   register: () => null,
-  loading: true
+  loading: true,
+  error: null
 }
 
 export const AuthContext = React.createContext<AuthContextProps>(defaultProvider as AuthContextProps);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null)
+
 
   const login = async (email: string, password: string) => {
     setLoading(true);
+    setError(null);
+
     try {
       const response = await axios.post('http://localhost:80/api/login', { email, password });
       setUser(response.data);
@@ -37,6 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
     catch (error) {
       console.error("Login failed:", error);
+      setError('Falha no login')
     }
     finally {
       setLoading(false);
@@ -88,6 +95,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [fetchUser])
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, loading }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, login, logout, register, loading, error }}>{children}</AuthContext.Provider>
   )
 }
