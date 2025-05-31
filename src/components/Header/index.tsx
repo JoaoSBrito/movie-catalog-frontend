@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import AuthModal from "../AuthModal";
 import Modal from "../Modal";
+import { toast } from "react-toastify";
 
 interface HeaderProps {
   onSearch: (query: string) => void;
@@ -35,13 +36,18 @@ export default function Header({ onSearch }: HeaderProps) {
     setOpenModal(false);
   }
 
+  const Logout = () => {
+    logout();
+    toast.success('Deslogado com sucesso!')
+  }
+
   return (
     <Fragment>
       <HeaderContainer>
         <HeaderContent>
           <Link href="/" onClick={() => {onSearch(""); setSearchQuery("")}}>
             <Logo>
-              <Film size={32} />
+              <Film size={24} />
               Catálogo de filmes
             </Logo>
           </Link>
@@ -66,7 +72,7 @@ export default function Header({ onSearch }: HeaderProps) {
               </FavoriteLink>
             </Link>
 
-            <LoginLink onClick={user ? logout : () => setOpenModal(true)}>
+            <LoginLink onClick={user ? Logout : () => setOpenModal(true)}>
               {user ? (
                 <Fragment>
                   <LogOut size={18} />

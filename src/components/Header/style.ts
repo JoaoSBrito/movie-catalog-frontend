@@ -54,6 +54,7 @@ export const SearchContainer = styled.div`
 
 export const SearchInput = styled.input`
   width: 100%;
+  box-sizing: border-box;
   padding: ${(props) => props.theme?.spacing?.md || "1rem"} ${(props) => props.theme?.spacing?.md || "1rem"} ${(props) => props.theme?.spacing?.md || "1rem"} 3rem;
   border: none;
   border-radius: ${(props) => props.theme?.borderRadius?.lg || "12px"};

@@ -2,7 +2,6 @@ import styled from "styled-components"
 
 export const AuthContainer = styled.div`
   padding: ${(props) => props.theme?.spacing?.xl || "2rem"};
-  width: 100%;
   max-width: 450px;
   margin: 0 auto;
 `

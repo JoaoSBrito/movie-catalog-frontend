@@ -4,6 +4,7 @@ import { Calendar, Heart, Star } from "lucide-react";
 import { formatDate, formatRating } from "@/utils";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "react-toastify";
 
 interface MovieDetailsProps {
   movie: Movie
@@ -17,7 +18,7 @@ export default function MovieDetails({ movie }: MovieDetailsProps) {
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!user) {
-      alert("Você precisa estar logado para adicionar um favorito")
+      toast.error("Você precisa estar logado!");
     }
     toggleFavorite(movie)
   }

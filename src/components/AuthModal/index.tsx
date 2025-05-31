@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import { AuthContainer, AuthFooter, AuthForm, AuthHeader, AuthLink, AuthSubtitle, AuthTitle, ErrorMessage, FormGroup, FormInput, FormLabel, SubmitButton } from "./style";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "react-toastify";
 
 
 interface AuthModalProps {
@@ -33,8 +34,10 @@ export default function AuthModal({ onClose }: AuthModalProps) {
 
       if (isLogin) {
         status = await login(email, password)
+        toast.success('Login efetuado!')
       } else {
         status = await register(name, email, password, confirmPassword)
+        toast.success('Registro efetuado!')
       }
       if (status) {
         onClose();

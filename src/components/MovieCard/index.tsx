@@ -20,6 +20,7 @@ import { useAuth } from "@/hooks/useAuth";
 import MovieDetails from "../MovieDetails";
 import Modal from "../Modal";
 import { formatDate, formatRating } from "@/utils";
+import { toast } from "react-toastify";
 
 export default function MovieCard({ movie }: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,7 +31,7 @@ export default function MovieCard({ movie }: any) {
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!user) {
-      alert("Você precisa estar logado para adicionar um favorito")
+      toast.error("Você precisa estar logado!");
     }
     toggleFavorite(movie)
   }
