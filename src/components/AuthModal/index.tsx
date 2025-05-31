@@ -47,12 +47,11 @@ export default function AuthModal({ onClose }: AuthModalProps) {
 
       if (isLogin) {
         status = await login(email, password);
-        toast.success("Login efetuado!");
       } else {
         status = await register(name, email, password, confirmPassword);
-        toast.success("Registro efetuado!");
       }
       if (status) {
+        toast.success(isLogin ? "Login efetuado!" : "Registro efetuado!");
         onClose();
       }
     } catch (err) {

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 
 interface User {
@@ -55,7 +55,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return true;
     } catch (error) {
       setLoading(false);
-      setError((error as any).response.data.message);
+
+      const AxiosError = error as AxiosError<{ message: string }>;
+      setError(AxiosError.response?.data.message || "Erro inesperado");
       return false;
     }
   };
@@ -93,7 +95,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return true;
     } catch (error) {
       setLoading(false);
-      setError((error as any).response.data.message);
+
+      const AxiosError = error as AxiosError<{ message: string }>;
+      setError(AxiosError.response?.data.message || "Erro inesperado");
       return false;
     }
   };

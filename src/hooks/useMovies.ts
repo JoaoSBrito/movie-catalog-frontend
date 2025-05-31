@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export type Movie = {
   id: number;
@@ -47,8 +47,8 @@ const useMovies = ({ category, search }: UseMoviesProps): UseMoviesResult => {
           );
           setData(response.data.results);
         }
-      } catch (err: any) {
-        setError(err.message || "Erro ao buscar os filmes.");
+      } catch (err) {
+        setError((err as AxiosError).message || "Erro ao buscar os filmes.");
       } finally {
         setLoading(false);
       }

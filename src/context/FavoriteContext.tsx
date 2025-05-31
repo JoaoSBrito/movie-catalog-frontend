@@ -4,13 +4,23 @@ import axios from "axios";
 import { Movie } from "@/hooks/useMovies";
 import { useAuth } from "@/hooks/useAuth";
 
+interface FavoriteContextType {
+  favorites: Movie[];
+  isFavorite: (movieId: number) => boolean;
+  toggleFavorite: (movie: Movie) => Promise<void>;
+  loading: boolean;
+}
+
 const defaultProvider = {
   favorites: [],
-  isFavorite: () => null,
-  toggleFavorite: () => null,
+  isFavorite: () => false,
+  toggleFavorite: async () => {},
+  loading: true,
 };
 
-export const FavoriteContext = React.createContext<any>(defaultProvider as any);
+export const FavoriteContext = React.createContext<FavoriteContextType>(
+  defaultProvider as FavoriteContextType,
+);
 
 export const FavoriteProvider = ({
   children,
@@ -83,6 +93,7 @@ export const FavoriteProvider = ({
     } finally {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favorites, fetched, user]);
 
   useEffect(() => {
