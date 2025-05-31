@@ -1,4 +1,3 @@
-import { Movie } from "@/hooks/useMovies";
 import {
   ActionButtons,
   BackdropImage,
@@ -16,11 +15,13 @@ import {
   PosterWrapper,
   Rating,
 } from "./style";
-import { Calendar, Heart, Star } from "lucide-react";
-import { formatDate, formatRating } from "@/utils";
-import { useFavorites } from "@/hooks/useFavorites";
-import { useAuth } from "@/hooks/useAuth";
 import { toast } from "react-toastify";
+import { Calendar, Heart, Star } from "lucide-react";
+
+import { Movie } from "@/hooks/useMovies";
+import { useAuth } from "@/hooks/useAuth";
+import { useFavorites } from "@/hooks/useFavorites";
+import { formatDate, formatRating } from "@/utils";
 
 interface MovieDetailsProps {
   movie: Movie;

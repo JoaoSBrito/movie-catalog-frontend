@@ -9,16 +9,17 @@ import {
 } from "./style";
 import { MoviesGrid } from "../MovieSection/style";
 import { AlertCircle, Heart } from "lucide-react";
+import axios from "axios";
 
-import Header from "../Header";
-import AuthModal from "../AuthModal";
 import Modal from "../Modal";
+import Header from "../Header";
+import Loading from "../Loading";
+import AuthModal from "../AuthModal";
 import MovieCard from "../MovieCard";
+
 import { useFavorites } from "@/hooks/useFavorites";
 import { useAuth } from "@/hooks/useAuth";
 import { Movie } from "@/hooks/useMovies";
-import Loading from "../Loading";
-import axios from "axios";
 
 interface Genres {
   id: number;

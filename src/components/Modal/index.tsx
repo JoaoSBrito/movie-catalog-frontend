@@ -1,6 +1,5 @@
-import type React from "react";
+import React, { useEffect, useRef } from "react";
 
-import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { CloseButton, ModalContainer, ModalOverlay } from "./style";

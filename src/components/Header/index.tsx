@@ -11,14 +11,13 @@ import {
   SearchInput,
 } from "./style";
 import { Film, Heart, LogOut, User } from "lucide-react";
-import Link from "next/link";
 import { toast } from "react-toastify";
-
-import { useAuth } from "@/hooks/useAuth";
+import Link from "next/link";
 
 import AuthModal from "../AuthModal";
 import Modal from "../Modal";
 
+import { useAuth } from "@/hooks/useAuth";
 interface HeaderProps {
   onSearch: (query: string) => void;
   hideSearch?: boolean;

@@ -10,8 +10,9 @@ import {
 } from "./style";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import MovieCard from "../MovieCard";
 import useMovies, { MovieCategory } from "@/hooks/useMovies";
+
+import MovieCard from "../MovieCard";
 import Loading from "../Loading";
 
 interface MovieSectionProps {

@@ -1,6 +1,4 @@
-/* eslint-disable */
-
-import { Calendar, Heart, Star } from "lucide-react"
+import React, { Fragment, useState } from "react";
 import {
   Card,
   PosterContainer,
@@ -13,16 +11,23 @@ import {
   PosterPlaceholder,
   Overview,
   FavoriteButton,
-} from "./style"
-import React, { Fragment, useState } from "react"
-import { useFavorites } from "@/hooks/useFavorites";
-import { useAuth } from "@/hooks/useAuth";
-import MovieDetails from "../MovieDetails";
-import Modal from "../Modal";
-import { formatDate, formatRating } from "@/utils";
+} from "./style";
+import { Calendar, Heart, Star } from "lucide-react";
 import { toast } from "react-toastify";
 
-export default function MovieCard({ movie }: any) {
+import { Movie } from "@/hooks/useMovies";
+import { useAuth } from "@/hooks/useAuth";
+import { useFavorites } from "@/hooks/useFavorites";
+import { formatDate, formatRating } from "@/utils";
+
+import MovieDetails from "../MovieDetails";
+import Modal from "../Modal";
+
+interface MovieCardProps {
+  movie: Movie;
+}
+
+export default function MovieCard({ movie }: MovieCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { toggleFavorite, isFavorite } = useFavorites();
@@ -33,23 +38,30 @@ export default function MovieCard({ movie }: any) {
     if (!user) {
       toast.error("Você precisa estar logado!");
     }
-    toggleFavorite(movie)
-  }
+    toggleFavorite(movie);
+  };
 
   return (
     <Fragment>
       <Card onClick={() => setIsModalOpen(true)}>
         <PosterContainer>
-          {movie.poster_path ?
-            <Poster src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-            : null
-          }
+          {movie.poster_path ? (
+            <Poster
+              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              alt={movie.title}
+            />
+          ) : null}
 
-          <PosterPlaceholder style={{ display: movie.poster_path ? "none" : "flex" }}>
+          <PosterPlaceholder
+            style={{ display: movie.poster_path ? "none" : "flex" }}
+          >
             No Image Available
           </PosterPlaceholder>
 
-          <FavoriteButton onClick={handleFavorite} isFavorite={isFavorite(movie.id)}>
+          <FavoriteButton
+            onClick={handleFavorite}
+            isFavorite={isFavorite(movie.id)}
+          >
             <Heart size={16} />
           </FavoriteButton>
         </PosterContainer>
@@ -68,7 +80,11 @@ export default function MovieCard({ movie }: any) {
             </ReleaseDate>
           </MetaInfo>
 
-          {movie.overview ? <Overview>{movie.overview}</Overview> : <Overview>Sem descrição</Overview>}
+          {movie.overview ? (
+            <Overview>{movie.overview}</Overview>
+          ) : (
+            <Overview>Sem descrição</Overview>
+          )}
         </Content>
       </Card>
 
@@ -76,5 +92,5 @@ export default function MovieCard({ movie }: any) {
         <MovieDetails movie={movie} />
       </Modal>
     </Fragment>
-  )
+  );
 }
