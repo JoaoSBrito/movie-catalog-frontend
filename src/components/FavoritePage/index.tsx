@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { FavoriteContainer, FavoritesTitle, FavoriteContent, FavoriteEmpty, FavoriteLoginButton, GenreSelect } from "./style";
 import { MoviesGrid } from "../MovieSection/style";
 import { AlertCircle, Heart } from "lucide-react";
@@ -11,11 +11,18 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { useAuth } from "@/hooks/useAuth";
 import { Movie } from "@/hooks/useMovies";
 import Loading from "../Loading";
+import axios from "axios";
+
+interface Genres {
+  id: number,
+  name: string
+}
 
 export default function FavoritePage() {
   const [search, setSearch] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [selectedGenreId, setSelectedGenreId] = useState<number | null>(null);
+  const [uniqueGenres, setUniqueGenres] = useState<Genres[]>([])
 
   const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) {
@@ -34,13 +41,24 @@ export default function FavoritePage() {
     setOpenModal(false);
   }
 
-    const uniqueGenres = Array.from(
-    new Map(
-      favorites
-        .flatMap((movie: Movie) => movie.genres || [])
-        .map((genre: Movie) => [genre.id, genre])
-    ).values()
-  );
+  const fetcheGenres = useCallback(async () => {
+    const response  = await axios.get('http://localhost:80/api/movie/genres')
+    setUniqueGenres(response.data.genres)
+  }, [])
+
+  useEffect(() => {
+    fetcheGenres()
+  }, [fetcheGenres])
+
+  const genresFiltered = useMemo(() => {
+    const favoritesGenresIds = favorites.flatMap((favorite:Movie) => favorite.genres).map((genre:Genres) => genre?.id)
+    const favoritesGenresIds2 = favorites.flatMap((favorite:Movie) => favorite.genre_ids)
+
+    return uniqueGenres.filter((genre) => {
+      return [...favoritesGenresIds, ...favoritesGenresIds2].includes(genre.id)
+    })
+    
+  }, [uniqueGenres,favorites])
 
   const filteredFavorites = selectedGenreId
     ? favorites.filter((movie: Movie) =>
@@ -61,9 +79,9 @@ export default function FavoritePage() {
 
           {loading && <Loading />}
 
-          {!loading && (
+          {!loading && genresFiltered.length > 0 && (
             <Fragment>
-              {user && uniqueGenres.length > 0 && (
+              {user && (
                 <div style={{ margin: "1rem 0" }}>
                   <label htmlFor="genre-select">Filtrar por gênero: </label>
                   <GenreSelect
@@ -76,7 +94,7 @@ export default function FavoritePage() {
                     }
                   >
                     <option value="">Todos os gêneros</option>
-                    {uniqueGenres.map((genre: any) => (
+                    {genresFiltered.map((genre: Genres) => (
                       <option key={genre.id} value={genre.id}>
                         {genre.name}
                       </option>

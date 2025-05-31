@@ -8,7 +8,8 @@ export type Movie = {
   poster_path: string;
   release_date: string;
   vote_average: number;
-  genres: { id: number; name: string }[]
+  genres?: { id: number; name: string }[]
+  genre_ids?: number[]
 };
 
 type UseMoviesResult = {
