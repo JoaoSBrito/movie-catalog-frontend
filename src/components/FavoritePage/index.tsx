@@ -50,7 +50,7 @@ export default function FavoritePage() {
 
   const genresFiltered = useMemo(() => {
     const favoritesGenresIds = favorites
-      .flatMap((favorite: Movie) => favorite.genres)
+      .flatMap((favorite: Movie) => favorite.genres ?? [])
       .map((genre: Genres) => genre?.id);
     const favoritesGenresIds2 = favorites.flatMap(
       (favorite: Movie) => favorite.genre_ids,
@@ -62,8 +62,10 @@ export default function FavoritePage() {
   }, [uniqueGenres, favorites]);
 
   const filteredFavorites = selectedGenreId
-    ? favorites.filter((movie: Movie) =>
-        movie.genres?.some((genre) => genre.id === selectedGenreId),
+    ? favorites.filter(
+        (movie: Movie) =>
+          movie.genres?.some((genre) => genre.id === selectedGenreId) ||
+          movie.genre_ids?.includes(selectedGenreId),
       )
     : favorites;
 
@@ -80,9 +82,9 @@ export default function FavoritePage() {
 
           {loading && <Loading />}
 
-          {!loading && genresFiltered.length > 0 && (
+          {!loading && (
             <Fragment>
-              {user && (
+              {user && favorites.length > 0 && (
                 <div style={{ margin: "1rem 0" }}>
                   <label htmlFor="genre-select">Filtrar por gênero: </label>
                   <GenreSelect
@@ -117,7 +119,7 @@ export default function FavoritePage() {
                 </FavoriteEmpty>
               ) : (
                 <Fragment>
-                  {filteredFavorites.length > 0 ? (
+                  {favorites.length > 0 ? (
                     <MoviesGrid>
                       {filteredFavorites?.map((movie: Movie) => (
                         <MovieCard key={movie.id} movie={movie} />

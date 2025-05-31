@@ -82,7 +82,7 @@ export const FavoriteProvider = ({
     try {
       const token = localStorage.getItem("token");
 
-      if (token && !favorites.length && !fetched) {
+      if (user && token && !favorites.length && !fetched) {
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
         const response = await axios.get("http://localhost:80/api/favorite");
         setFavorites(response.data.favorites);
@@ -93,7 +93,6 @@ export const FavoriteProvider = ({
     } finally {
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favorites, fetched, user]);
 
   useEffect(() => {
