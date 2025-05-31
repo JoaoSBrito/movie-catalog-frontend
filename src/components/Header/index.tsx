@@ -21,8 +21,9 @@ import Modal from "../Modal";
 
 interface HeaderProps {
   onSearch: (query: string) => void;
+  hideSearch?: boolean;
 }
-export default function Header({ onSearch }: HeaderProps) {
+export default function Header({ onSearch, hideSearch }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [openModal, setOpenModal] = useState(false);
 
@@ -70,17 +71,19 @@ export default function Header({ onSearch }: HeaderProps) {
             </Logo>
           </Link>
 
-          <SearchContainer>
-            <form onSubmit={handleSubmit}>
-              <SearchIcon />
-              <SearchInput
-                type="text"
-                placeholder="Pesquisar..."
-                value={searchQuery}
-                onChange={handleChange}
-              />
-            </form>
-          </SearchContainer>
+          {!hideSearch && (
+            <SearchContainer>
+              <form onSubmit={handleSubmit}>
+                <SearchIcon />
+                <SearchInput
+                  type="text"
+                  placeholder="Pesquisar..."
+                  value={searchQuery}
+                  onChange={handleChange}
+                />
+              </form>
+            </SearchContainer>
+          )}
 
           <FavoriteContainer>
             <Link href="/favorite">

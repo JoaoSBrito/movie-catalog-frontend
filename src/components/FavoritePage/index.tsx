@@ -26,19 +26,9 @@ interface Genres {
 }
 
 export default function FavoritePage() {
-  const [search, setSearch] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [selectedGenreId, setSelectedGenreId] = useState<number | null>(null);
   const [uniqueGenres, setUniqueGenres] = useState<Genres[]>([]);
-
-  const handleSearch = useCallback(async (query: string) => {
-    if (!query.trim()) {
-      setSearch("");
-      return;
-    }
-
-    setSearch(query);
-  }, []);
 
   const { user, setError } = useAuth();
   const { favorites, loading } = useFavorites();
@@ -79,7 +69,7 @@ export default function FavoritePage() {
   return (
     <Fragment>
       <FavoriteContainer>
-        <Header onSearch={handleSearch} />
+        <Header onSearch={() => {}} hideSearch />
 
         <FavoriteContent>
           <FavoritesTitle>
