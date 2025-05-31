@@ -25,6 +25,9 @@
     "babel-plugin-styled-components": "^2.1.4",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.1",
+    "prettier": "^3.5.3",
     "typescript": "^5"
   }
 }

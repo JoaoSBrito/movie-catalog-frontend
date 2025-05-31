@@ -7,52 +7,56 @@ import { useAuth } from "@/hooks/useAuth";
 const defaultProvider = {
   favorites: [],
   isFavorite: () => null,
-  toggleFavorite: () => null
-}
+  toggleFavorite: () => null,
+};
 
 export const FavoriteContext = React.createContext<any>(defaultProvider as any);
 
-export const FavoriteProvider = ({ children }: { children: React.ReactNode }) => {
-  const [favorites, setFavorites] = useState<Movie[]>([])
+export const FavoriteProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [favorites, setFavorites] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [fetched, setFetched] = useState<boolean>(false)
+  const [fetched, setFetched] = useState<boolean>(false);
 
-  const { user } = useAuth()
+  const { user } = useAuth();
 
   const addFavorite = async (movie: Movie) => {
     try {
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem("token");
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
-      await axios.post('http://localhost:80/api/favorite', {
+      await axios.post("http://localhost:80/api/favorite", {
         tmdb_id: movie.id,
       });
 
       setFavorites((prev) => {
         if (prev?.length && prev?.some((m) => m.id === movie.id)) {
-          return prev
+          return prev;
         }
-        return [...(prev ?? []), movie]
-      })
+        return [...(prev ?? []), movie];
+      });
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const removeFavorite = async (movieId: number) => {
     try {
       await axios.delete(`http://localhost:80/api/favorite/${movieId}`);
-      setFavorites((prev) => prev?.filter((movie) => movie.id !== movieId))
+      setFavorites((prev) => prev?.filter((movie) => movie.id !== movieId));
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const isFavorite = (movieId: number) => {
-    if (!favorites) return false
+    if (!favorites) return false;
 
-    return favorites.some((movie) => movie.id === movieId)
-  }
+    return favorites.some((movie) => movie.id === movieId);
+  };
 
   const toggleFavorite = async (movie: Movie) => {
     if (isFavorite(movie.id)) {
@@ -63,36 +67,40 @@ export const FavoriteProvider = ({ children }: { children: React.ReactNode }) =>
   };
 
   const fetchFavorites = useCallback(async () => {
-    setLoading(true)
+    setLoading(true);
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
 
       if (token && !favorites.length && !fetched) {
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-        const response = await axios.get('http://localhost:80/api/favorite');
-        setFavorites(response.data.favorites)
+        const response = await axios.get("http://localhost:80/api/favorite");
+        setFavorites(response.data.favorites);
         setFetched(true);
       }
     } catch (err) {
       console.log(err);
     } finally {
-      setLoading(false)
-    } 
-  }, [favorites, fetched, user])
+      setLoading(false);
+    }
+  }, [favorites, fetched, user]);
 
   useEffect(() => {
     fetchFavorites();
-  }, [fetchFavorites])
+  }, [fetchFavorites]);
 
   useEffect(() => {
     if (!user) {
-      setFavorites([])
-      setFetched(false)
+      setFavorites([]);
+      setFetched(false);
     }
-  }, [user])
+  }, [user]);
 
   return (
-    <FavoriteContext.Provider value={{ favorites, isFavorite, toggleFavorite, loading }}>{children}</FavoriteContext.Provider>
-  )
-}
+    <FavoriteContext.Provider
+      value={{ favorites, isFavorite, toggleFavorite, loading }}
+    >
+      {children}
+    </FavoriteContext.Provider>
+  );
+};

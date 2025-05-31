@@ -1,5 +1,12 @@
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
-import { FavoriteContainer, FavoritesTitle, FavoriteContent, FavoriteEmpty, FavoriteLoginButton, GenreSelect } from "./style";
+import {
+  FavoriteContainer,
+  FavoritesTitle,
+  FavoriteContent,
+  FavoriteEmpty,
+  FavoriteLoginButton,
+  GenreSelect,
+} from "./style";
 import { MoviesGrid } from "../MovieSection/style";
 import { AlertCircle, Heart } from "lucide-react";
 
@@ -14,15 +21,15 @@ import Loading from "../Loading";
 import axios from "axios";
 
 interface Genres {
-  id: number,
-  name: string
+  id: number;
+  name: string;
 }
 
 export default function FavoritePage() {
   const [search, setSearch] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [selectedGenreId, setSelectedGenreId] = useState<number | null>(null);
-  const [uniqueGenres, setUniqueGenres] = useState<Genres[]>([])
+  const [uniqueGenres, setUniqueGenres] = useState<Genres[]>([]);
 
   const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) {
@@ -37,33 +44,36 @@ export default function FavoritePage() {
   const { favorites, loading } = useFavorites();
 
   const closeModal = () => {
-    setError(null)
+    setError(null);
     setOpenModal(false);
-  }
+  };
 
   const fetcheGenres = useCallback(async () => {
-    const response  = await axios.get('http://localhost:80/api/movie/genres')
-    setUniqueGenres(response.data.genres)
-  }, [])
+    const response = await axios.get("http://localhost:80/api/movie/genres");
+    setUniqueGenres(response.data.genres);
+  }, []);
 
   useEffect(() => {
-    fetcheGenres()
-  }, [fetcheGenres])
+    fetcheGenres();
+  }, [fetcheGenres]);
 
   const genresFiltered = useMemo(() => {
-    const favoritesGenresIds = favorites.flatMap((favorite:Movie) => favorite.genres).map((genre:Genres) => genre?.id)
-    const favoritesGenresIds2 = favorites.flatMap((favorite:Movie) => favorite.genre_ids)
+    const favoritesGenresIds = favorites
+      .flatMap((favorite: Movie) => favorite.genres)
+      .map((genre: Genres) => genre?.id);
+    const favoritesGenresIds2 = favorites.flatMap(
+      (favorite: Movie) => favorite.genre_ids,
+    );
 
     return uniqueGenres.filter((genre) => {
-      return [...favoritesGenresIds, ...favoritesGenresIds2].includes(genre.id)
-    })
-    
-  }, [uniqueGenres,favorites])
+      return [...favoritesGenresIds, ...favoritesGenresIds2].includes(genre.id);
+    });
+  }, [uniqueGenres, favorites]);
 
   const filteredFavorites = selectedGenreId
     ? favorites.filter((movie: Movie) =>
-      movie.genres?.some((genre) => genre.id === selectedGenreId)
-    )
+        movie.genres?.some((genre) => genre.id === selectedGenreId),
+      )
     : favorites;
 
   return (
@@ -89,7 +99,7 @@ export default function FavoritePage() {
                     value={selectedGenreId ?? ""}
                     onChange={(e) =>
                       setSelectedGenreId(
-                        e.target.value ? Number(e.target.value) : null
+                        e.target.value ? Number(e.target.value) : null,
                       )
                     }
                   >
@@ -103,30 +113,34 @@ export default function FavoritePage() {
                 </div>
               )}
 
-          {!user ? (
-            <FavoriteEmpty>
-              <AlertCircle size={64} />
-              <h1>Não possui favoritos</h1>
-              <p>Para visualizar seus favoritos é necessário estar logado!</p>
-              <FavoriteLoginButton onClick={() => setOpenModal(true)}>Entrar</FavoriteLoginButton>
-            </FavoriteEmpty>
-          ) : (
-            <Fragment>
-              {filteredFavorites.length > 0 ? (
-                <MoviesGrid>
-                  {filteredFavorites?.map((movie: Movie) => (
-                    <MovieCard key={movie.id} movie={movie} />
-                  ))}
-                </MoviesGrid>
-              ) : (
+              {!user ? (
                 <FavoriteEmpty>
                   <AlertCircle size={64} />
                   <h1>Não possui favoritos</h1>
-                  <p>Para visualizar é necessário favoritar!</p>
+                  <p>
+                    Para visualizar seus favoritos é necessário estar logado!
+                  </p>
+                  <FavoriteLoginButton onClick={() => setOpenModal(true)}>
+                    Entrar
+                  </FavoriteLoginButton>
                 </FavoriteEmpty>
+              ) : (
+                <Fragment>
+                  {filteredFavorites.length > 0 ? (
+                    <MoviesGrid>
+                      {filteredFavorites?.map((movie: Movie) => (
+                        <MovieCard key={movie.id} movie={movie} />
+                      ))}
+                    </MoviesGrid>
+                  ) : (
+                    <FavoriteEmpty>
+                      <AlertCircle size={64} />
+                      <h1>Não possui favoritos</h1>
+                      <p>Para visualizar é necessário favoritar!</p>
+                    </FavoriteEmpty>
+                  )}
+                </Fragment>
               )}
-            </Fragment>
-          )}
             </Fragment>
           )}
         </FavoriteContent>

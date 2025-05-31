@@ -1,4 +1,4 @@
-import { SpinnerContainer, Spinner, LoadingText } from "./style"
+import { SpinnerContainer, Spinner, LoadingText } from "./style";
 
 export default function Loading() {
   return (
@@ -6,5 +6,5 @@ export default function Loading() {
       <Spinner />
       <LoadingText>Carregando filmes...</LoadingText>
     </SpinnerContainer>
-  )
+  );
 }

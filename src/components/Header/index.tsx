@@ -1,11 +1,23 @@
 import { Fragment, useState } from "react";
-import { FavoriteContainer, FavoriteLink, HeaderContainer, HeaderContent, LoginLink, Logo, SearchContainer, SearchIcon, SearchInput } from "./style";
+import {
+  FavoriteContainer,
+  FavoriteLink,
+  HeaderContainer,
+  HeaderContent,
+  LoginLink,
+  Logo,
+  SearchContainer,
+  SearchIcon,
+  SearchInput,
+} from "./style";
 import { Film, Heart, LogOut, User } from "lucide-react";
 import Link from "next/link";
+import { toast } from "react-toastify";
+
 import { useAuth } from "@/hooks/useAuth";
+
 import AuthModal from "../AuthModal";
 import Modal from "../Modal";
-import { toast } from "react-toastify";
 
 interface HeaderProps {
   onSearch: (query: string) => void;
@@ -29,23 +41,29 @@ export default function Header({ onSearch }: HeaderProps) {
 
     if (!searchQuery.trim()) return;
     onSearch(searchQuery.trim());
-  }
+  };
 
   const closeModal = () => {
     setError(null);
     setOpenModal(false);
-  }
+  };
 
   const Logout = () => {
     logout();
-    toast.success('Deslogado com sucesso!')
-  }
+    toast.success("Deslogado com sucesso!");
+  };
 
   return (
     <Fragment>
       <HeaderContainer>
         <HeaderContent>
-          <Link href="/" onClick={() => {onSearch(""); setSearchQuery("")}}>
+          <Link
+            href="/"
+            onClick={() => {
+              onSearch("");
+              setSearchQuery("");
+            }}
+          >
             <Logo>
               <Film size={24} />
               Catálogo de filmes

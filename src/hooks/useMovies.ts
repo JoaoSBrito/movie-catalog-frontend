@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export type Movie = {
   id: number;
@@ -8,8 +8,8 @@ export type Movie = {
   poster_path: string;
   release_date: string;
   vote_average: number;
-  genres?: { id: number; name: string }[]
-  genre_ids?: number[]
+  genres?: { id: number; name: string }[];
+  genre_ids?: number[];
 };
 
 type UseMoviesResult = {
@@ -18,7 +18,7 @@ type UseMoviesResult = {
   error: string | null;
 };
 
-export type MovieCategory = 'popular' | 'upcoming' | 'top_rated';
+export type MovieCategory = "popular" | "upcoming" | "top_rated";
 
 interface UseMoviesProps {
   category?: MovieCategory;
@@ -36,15 +36,19 @@ const useMovies = ({ category, search }: UseMoviesProps): UseMoviesResult => {
       setError(null);
       try {
         if (search) {
-          const response = await axios.get(`http://localhost:80/api/movie/search?query=${encodeURIComponent(search)}`);
+          const response = await axios.get(
+            `http://localhost:80/api/movie/search?query=${encodeURIComponent(search)}`,
+          );
           setData(response.data.results);
           return;
         } else {
-          const response = await axios.get(`http://localhost:80/api/movie/${category}`);
+          const response = await axios.get(
+            `http://localhost:80/api/movie/${category}`,
+          );
           setData(response.data.results);
         }
       } catch (err: any) {
-        setError(err.message || 'Erro ao buscar os filmes.');
+        setError(err.message || "Erro ao buscar os filmes.");
       } finally {
         setLoading(false);
       }

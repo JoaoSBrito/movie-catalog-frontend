@@ -1,5 +1,21 @@
 import { Movie } from "@/hooks/useMovies";
-import { ActionButtons, BackdropImage, FavoriteButton, MetaItem, MovieContent, MovieDetailsContainer, MovieHero, MovieInfo, MovieMeta, MovieTitle, Overview, PosterImage, PosterPlaceholder, PosterWrapper, Rating } from "./style";
+import {
+  ActionButtons,
+  BackdropImage,
+  FavoriteButton,
+  MetaItem,
+  MovieContent,
+  MovieDetailsContainer,
+  MovieHero,
+  MovieInfo,
+  MovieMeta,
+  MovieTitle,
+  Overview,
+  PosterImage,
+  PosterPlaceholder,
+  PosterWrapper,
+  Rating,
+} from "./style";
 import { Calendar, Heart, Star } from "lucide-react";
 import { formatDate, formatRating } from "@/utils";
 import { useFavorites } from "@/hooks/useFavorites";
@@ -7,7 +23,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "react-toastify";
 
 interface MovieDetailsProps {
-  movie: Movie
+  movie: Movie;
 }
 
 export default function MovieDetails({ movie }: MovieDetailsProps) {
@@ -20,24 +36,29 @@ export default function MovieDetails({ movie }: MovieDetailsProps) {
     if (!user) {
       toast.error("Você precisa estar logado!");
     }
-    toggleFavorite(movie)
-  }
-
+    toggleFavorite(movie);
+  };
 
   return (
     <MovieDetailsContainer>
       <MovieHero>
-        <BackdropImage backdropUrl={`https://image.tmdb.org/t/p/w1280${movie.poster_path}`} />
+        <BackdropImage
+          backdropUrl={`https://image.tmdb.org/t/p/w1280${movie.poster_path}`}
+        />
       </MovieHero>
 
       <MovieContent>
         <PosterWrapper>
-          {movie.poster_path ?
-            <PosterImage src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-            : null
-          }
+          {movie.poster_path ? (
+            <PosterImage
+              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              alt={movie.title}
+            />
+          ) : null}
 
-          <PosterPlaceholder style={{ display: movie.poster_path ? "none" : "flex" }}>
+          <PosterPlaceholder
+            style={{ display: movie.poster_path ? "none" : "flex" }}
+          >
             No Image Available
           </PosterPlaceholder>
         </PosterWrapper>
@@ -57,15 +78,23 @@ export default function MovieDetails({ movie }: MovieDetailsProps) {
             </MetaItem>
           </MovieMeta>
 
-          <Overview>{movie.overview ?? 'Sem descrição'}</Overview>
+          <Overview>{movie.overview ?? "Sem descrição"}</Overview>
           <ActionButtons>
-            <FavoriteButton onClick={handleFavorite} isFavorite={isFavorite(movie.id)}>
-              <Heart size={18} fill={isFavorite(movie.id) ? "currentColor" : "none"} />
-              {isFavorite(movie.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+            <FavoriteButton
+              onClick={handleFavorite}
+              isFavorite={isFavorite(movie.id)}
+            >
+              <Heart
+                size={18}
+                fill={isFavorite(movie.id) ? "currentColor" : "none"}
+              />
+              {isFavorite(movie.id)
+                ? "Remover dos favoritos"
+                : "Adicionar aos favoritos"}
             </FavoriteButton>
           </ActionButtons>
         </MovieInfo>
       </MovieContent>
     </MovieDetailsContainer>
-  )
+  );
 }

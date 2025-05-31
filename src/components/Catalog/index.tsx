@@ -20,7 +20,6 @@ export default function Catalog() {
     <Container>
       <Header onSearch={handleSearch} />
       <Content>
-
         {search ? (
           <MovieSection
             title={`Resultados da pesquisa por "${search}"`}
@@ -33,8 +32,7 @@ export default function Catalog() {
             <MovieSection title="⭐ Melhores Avaliados" category="top_rated" />
           </>
         )}
-
       </Content>
     </Container>
-  )
+  );
 }

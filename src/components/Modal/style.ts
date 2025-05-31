@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
 export const ModalOverlay = styled.div`
   position: fixed;
@@ -13,7 +13,7 @@ export const ModalOverlay = styled.div`
   z-index: 1000;
   padding: ${(props) => props.theme?.spacing?.md || "1rem"};
   overflow-y: auto;
-`
+`;
 
 export const ModalContainer = styled.div`
   background: ${(props) => props.theme?.colors?.surface || "#1a365d"};
@@ -22,31 +22,35 @@ export const ModalContainer = styled.div`
   max-width: 900px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: ${(props) => props.theme?.shadows?.xl || "0 20px 25px rgba(0, 0, 0, 0.1)"};
+  box-shadow: ${(props) =>
+    props.theme?.shadows?.xl || "0 20px 25px rgba(0, 0, 0, 0.1)"};
   position: relative;
-  
+
   /* Custom scrollbar */
   scrollbar-width: thin;
-  scrollbar-color: ${(props) => props.theme?.colors?.primary || "#01b4e4"} ${(props) => props.theme?.colors?.card || "#2d3748"};
-  
+  scrollbar-color: ${(props) => props.theme?.colors?.primary || "#01b4e4"}
+    ${(props) => props.theme?.colors?.card || "#2d3748"};
+
   &::-webkit-scrollbar {
     width: 8px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: ${(props) => props.theme?.colors?.card || "#2d3748"};
-    border-radius: 0 ${(props) => props.theme?.borderRadius?.lg || "12px"} ${(props) => props.theme?.borderRadius?.lg || "12px"} 0;
+    border-radius: 0 ${(props) => props.theme?.borderRadius?.lg || "12px"}
+      ${(props) => props.theme?.borderRadius?.lg || "12px"} 0;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background-color: ${(props) => props.theme?.colors?.primary || "#01b4e4"};
     border-radius: 4px;
   }
 
-  @media (max-width: ${(props) => props.theme?.breakpoints?.tablet || "768px"}) {
+  @media (max-width: ${(props) =>
+      props.theme?.breakpoints?.tablet || "768px"}) {
     max-height: 85vh;
   }
-`
+`;
 
 export const CloseButton = styled.button`
   position: absolute;
@@ -64,9 +68,9 @@ export const CloseButton = styled.button`
   cursor: pointer;
   z-index: 10;
   transition: all 0.2s ease;
-  
+
   &:hover {
     background: rgba(0, 0, 0, 0.8);
     transform: scale(1.1);
   }
-`
+`;

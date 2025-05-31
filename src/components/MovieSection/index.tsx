@@ -1,5 +1,13 @@
 import { useRef } from "react";
-import { CarouselButton, CarouselContainer, CarouselWrapper, MoviesCarousel, MoviesGrid, SectionContainer, SectionTitle } from "./style";
+import {
+  CarouselButton,
+  CarouselContainer,
+  CarouselWrapper,
+  MoviesCarousel,
+  MoviesGrid,
+  SectionContainer,
+  SectionTitle,
+} from "./style";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import MovieCard from "../MovieCard";
@@ -12,48 +20,50 @@ interface MovieSectionProps {
   search?: string;
 }
 
-export default function MovieSection({ category, title, search }: MovieSectionProps) {
-  const carouselRef = useRef<HTMLDivElement>(null)
+export default function MovieSection({
+  category,
+  title,
+  search,
+}: MovieSectionProps) {
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const { data, loading, error } = useMovies({ category, search });
 
-  if (error) return <p>Erro: {error}</p>
+  if (error) return <p>Erro: {error}</p>;
 
   const scrollLeft = () => {
     if (carouselRef.current) {
-      const scrollAmount = carouselRef.current.clientWidth * 0.8
+      const scrollAmount = carouselRef.current.clientWidth * 0.8;
       carouselRef.current.scrollBy({
         left: -scrollAmount,
         behavior: "smooth",
-      })
+      });
     }
-  }
+  };
 
   const scrollRight = () => {
     if (carouselRef.current) {
-      const scrollAmount = carouselRef.current.clientWidth * 0.8
+      const scrollAmount = carouselRef.current.clientWidth * 0.8;
       carouselRef.current.scrollBy({
         left: scrollAmount,
         behavior: "smooth",
-      })
+      });
     }
-  }
-
+  };
 
   return (
     <SectionContainer>
       <SectionTitle>{title}</SectionTitle>
 
       {loading && <Loading />}
-      
+
       {!loading && (
         <>
           {search ? (
             <MoviesGrid>
-              {data?.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
-              ))}
-            </MoviesGrid>) : (
+              {data?.map((movie) => <MovieCard key={movie.id} movie={movie} />)}
+            </MoviesGrid>
+          ) : (
             <CarouselContainer>
               <CarouselButton onClick={scrollLeft} position="left">
                 <ChevronLeft size={24} />
@@ -72,7 +82,6 @@ export default function MovieSection({ category, title, search }: MovieSectionPr
               </CarouselButton>
             </CarouselContainer>
           )}
-
         </>
       )}
     </SectionContainer>
